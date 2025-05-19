@@ -18,9 +18,16 @@ export class OrderController {
       };
 
       const order = await this.orderService.createOrder(orderData);
-      res.status(201).json(order);
+      res.status(201).json({
+        success: true,
+        data: order
+      });
     } catch (error) {
-      res.status(500).json({ error: 'Error creating order' });
+      res.status(500).json({
+        success: false,
+        error: 'Error creating order',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   }
 
@@ -30,22 +37,39 @@ export class OrderController {
       const order = await this.orderService.getOrder(id);
 
       if (!order) {
-        res.status(404).json({ error: 'Order not found' });
+        res.status(404).json({
+          success: false,
+          error: 'Order not found'
+        });
         return;
       }
 
-      res.json(order);
+      res.json({
+        success: true,
+        data: order
+      });
     } catch (error) {
-      res.status(500).json({ error: 'Error fetching order' });
+      res.status(500).json({
+        success: false,
+        error: 'Error fetching order',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   }
 
   async getAllOrders(req: Request, res: Response): Promise<void> {
     try {
       const orders = await this.orderService.getAllOrders();
-      res.json(orders);
+      res.json({
+        success: true,
+        data: orders
+      });
     } catch (error) {
-      res.status(500).json({ error: 'Error fetching orders' });
+      res.status(500).json({
+        success: false,
+        error: 'Error fetching orders',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   }
 } 

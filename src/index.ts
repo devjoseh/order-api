@@ -20,7 +20,13 @@ app.get('/orders', (req, res) => orderController.getAllOrders(req, res));
 
 // Health check endpoint
 app.get('/', (req, res) => {
-  res.json({ status: 'API is running' });
+  res.json({
+    success: true,
+    data: {
+      status: 'API is running',
+      timestamp: new Date().toISOString()
+    }
+  });
 });
 
 // For local development
