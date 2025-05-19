@@ -18,6 +18,17 @@ app.post('/orders', (req, res) => orderController.createOrder(req, res));
 app.get('/orders/:id', (req, res) => orderController.getOrder(req, res));
 app.get('/orders', (req, res) => orderController.getAllOrders(req, res));
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-}); 
+// Health check endpoint
+app.get('/', (req, res) => {
+  res.json({ status: 'API is running' });
+});
+
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
+
+// For Vercel
+export default app; 
